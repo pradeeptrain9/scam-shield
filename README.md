@@ -1,12 +1,17 @@
 # Scam Shield
 
-**Catches scam messages on your own computer. Only redacted text ever reaches the cloud.**
+**Catches scam messages on your own device. Only redacted text ever reaches the cloud.**
 
-India lost thousands of crores to online fraud in 2024: "digital arrest" calls, fake KYC
-alerts, task-based job scams. The victims are often the least technical person in the family.
-Scam Shield is a Chrome extension that checks any message (an email open in Gmail, text you
-select on WhatsApp Web, Messages for Web, or anywhere else, or something you paste) and
-says *scam / suspicious / safe* in plain language.
+Online fraud in India keeps finding new shapes: "digital arrest" calls, fake KYC alerts,
+task-based job scams. The victims are often the least technical person in the family.
+Scam Shield checks a message and says *scam / suspicious / safe* in plain language, on two platforms:
+
+- **Chrome extension**: an email open in Gmail, text you select on WhatsApp Web, Messages for
+  Web, or anywhere else, or something you paste.
+- **Android app**: share a message to Scam Shield, select text in any app and pick
+  **Check with Scam Shield**, or paste it.
+
+Both run the same router, rules and redactor, and both use the same Firebase backend.
 
 ## How Firebase AI Logic hybrid inference is used
 
@@ -32,6 +37,14 @@ message ──► rules engine (deterministic, offline) ─┐
   - Both share one structured-output schema (`responseConstraint` on-device,
     `responseSchema` in cloud). `response.inferenceSource` is shown to the user.
 - `src/router.js`: the second-opinion router.
+- Android (`android/app/src/main/java/app/scamshield/`) uses the same design with the Firebase AI
+  Logic Android SDK (`firebase-ai` + `firebase-ai-ondevice`):
+  - `Shield.kt` runs Gemini Nano through AICore in `ONLY_ON_DEVICE` mode, and the cloud in
+    `PREFER_IN_CLOUD` mode.
+  - The structured output schema comes from a KSP-generated `@Generable` class, used with `generateObject()`.
+  - `warmUp()` loads Nano before the first check.
+  - `Rules.kt` and `Router.kt` are ports of the JS engine. `EngineTest.kt` runs the same cases as
+    `test/engine.test.js`, so the two can't drift apart.
 - `src/rules.js`: scam signals, verdict bands, and the redactor. Unit-tested.
 - The panel's **"What left your device"** box shows exactly what was sent, or "Nothing".
 
@@ -66,6 +79,21 @@ Other Firebase products:
    1. Enable `chrome://flags/#prompt-api-for-gemini-nano-multimodal-input` and restart Chrome.
    2. Open `chrome://extensions`, turn on **Developer mode**, click **Load unpacked**, and pick `dist/`.
 9. Click the toolbar icon, then click **Enable on-device model** once to download Gemini Nano.
+
+### Android app
+
+1. Add an **Android app** with package `app.scamshield` to the same Firebase project.
+2. Save its `google-services.json` as `android/app/google-services.json`. The file is gitignored.
+3. Build and run the tests (JDK 17+, Android SDK platform 37):
+   ```bash
+   cd android && ./gradlew testDebugUnitTest assembleDebug
+   ```
+4. Install and run `app/build/outputs/apk/debug/app-debug.apk`.
+5. Find the App Check debug token in logcat (`DebugAppCheckProvider`). Register it under
+   **App Check > Apps > Manage debug tokens**.
+6. On-device Gemini Nano needs a phone with AICore, such as a recent Pixel or Galaxy. See the
+   [ML Kit Prompt API device list](https://developers.google.com/ml-kit/genai). On an emulator or an
+   unsupported phone, the app runs on rules plus the cloud second opinion.
 
 ## License
 
