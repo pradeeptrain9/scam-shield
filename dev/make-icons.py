@@ -29,3 +29,11 @@ for x, y in [(330, 520), (700, 380)]:
 for size in (16, 32, 48, 128):
     img.resize((size, size), Image.LANCZOS).save(f"static/icons/icon{size}.png")
 print("wrote static/icons/icon{16,32,48,128}.png")
+
+# Android launcher icons (legacy mipmaps; shield on transparent works on every launcher).
+import os
+for dpi, size in {"mdpi": 48, "hdpi": 72, "xhdpi": 96, "xxhdpi": 144, "xxxhdpi": 192}.items():
+    out = f"android/app/src/main/res/mipmap-{dpi}"
+    os.makedirs(out, exist_ok=True)
+    img.resize((size, size), Image.LANCZOS).save(f"{out}/ic_launcher.png")
+print("wrote android mipmaps")
