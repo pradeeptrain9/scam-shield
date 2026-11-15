@@ -1,0 +1,18 @@
+{
+  "manifest_version": 3,
+  "name": "Scam Shield",
+  "version": "0.1.0",
+  "description": "Catches scam messages on-device with Gemini Nano. Only redacted text ever reaches the cloud.",
+  "minimum_chrome_version": "139",
+  "icons": { "16": "icons/icon16.png", "32": "icons/icon32.png", "48": "icons/icon48.png", "128": "icons/icon128.png" },
+  "action": {
+    "default_title": "Open Scam Shield",
+    "default_icon": { "16": "icons/icon16.png", "32": "icons/icon32.png" }
+  },
+  "side_panel": { "default_path": "panel.html" },
+  "background": { "service_worker": "background.js", "type": "module" },
+  "permissions": ["sidePanel", "contextMenus", "storage"],
+  "content_scripts": [
+    { "matches": ["https://mail.google.com/*"], "js": ["content.js"], "run_at": "document_idle" }
+  ]
+}

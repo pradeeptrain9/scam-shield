@@ -1,0 +1,21 @@
+rules_version = '2';
+// Community pool holds counters only: tactic combos and link hosts, never message text.
+service cloud.firestore {
+  match /databases/{db}/documents {
+    function bumpOnly() {
+      let prev = resource == null ? 0 : resource.data.count;
+      return request.auth != null
+        && request.resource.data.keys().hasOnly(['count', 'lastSeen'])
+        && request.resource.data.count == prev + 1
+        && request.resource.data.lastSeen == request.time;
+    }
+    match /tactics/{key} {
+      allow read: if true;
+      allow write: if key.size() < 300 && key.matches('[a-z_+]+') && bumpOnly();
+    }
+    match /domains/{host} {
+      allow read: if true;
+      allow write: if host.size() < 254 && bumpOnly();
+    }
+  }
+}

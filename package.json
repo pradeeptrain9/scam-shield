@@ -1,0 +1,19 @@
+{
+  "name": "scam-shield",
+  "version": "1.0.0",
+  "scripts": {
+    "build": "node build.mjs",
+    "test": "node --test test/*.test.js",
+    "harness": "node build.mjs && node dev/harness.mjs && python3 -m http.server 5181 --directory .harness"
+  },
+  "license": "Apache-2.0",
+  "description": "Chrome extension that catches scam messages on-device with Gemini Nano and escalates only redacted text to the cloud, via Firebase AI Logic hybrid inference.",
+  "dependencies": {
+    "firebase": "^13.3.0"
+  },
+  "devDependencies": {
+    "esbuild": "^0.28.2"
+  },
+  "private": true,
+  "type": "module"
+}

@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Scam Shield</title>
+  <link rel="stylesheet" href="panel.css">
+</head>
+<body>
+  <header>
+    <h1>Scam Shield</h1>
+    <p id="device" class="chip">Checking on-device model…</p>
+    <button id="download" hidden>Enable on-device model</button>
+  </header>
+
+  <label for="msg">Paste a message, right-click selected text on any page, or open an email in Gmail.</label>
+  <textarea id="msg" rows="6" placeholder="Dear customer, your KYC will be blocked today…"></textarea>
+  <div class="row">
+    <button id="check">Check message</button>
+    <select id="sample" aria-label="Load a sample message">
+      <option value="">Samples…</option>
+      <option>This is CBI officer Sharma. A parcel with drugs was found in your name. You are under digital arrest. Install AnyDesk immediately and do not tell your family.</option>
+      <option>Dear customer your SBI KYC will be blocked today. Share the OTP sent to 9876543210 to update: https://bit.ly/sbi-kyc</option>
+      <option>Hi, I sent ₹5000 to your number by mistake, please send it back to ravi@okaxis. My child is in hospital.</option>
+      <option>Part time job! Like YouTube videos and earn ₹3000 per day. Contact HR on WhatsApp.</option>
+      <option>Hey, are we still on for lunch Saturday at 1? I booked the place near your office.</option>
+    </select>
+  </div>
+
+  <section id="result" hidden aria-live="polite">
+    <div id="verdict"></div>
+    <p id="explain"></p>
+    <ul id="tactics" class="chips"></ul>
+    <p id="community"></p>
+    <details open>
+      <summary>How this was decided</summary>
+      <ol id="trail"></ol>
+    </details>
+    <details id="sentbox">
+      <summary>What left your device</summary>
+      <pre id="sent"></pre>
+    </details>
+  </section>
+  <script type="module" src="panel.js"></script>
+</body>
+</html>

@@ -1,0 +1,4 @@
+{
+  "firestore": { "rules": "firestore.rules" },
+  "remoteconfig": { "template": "remoteconfig.template.json" }
+}

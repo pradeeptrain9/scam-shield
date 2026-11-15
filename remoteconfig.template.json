@@ -1,0 +1,8 @@
+{
+  "parameters": {
+    "scam_score":       { "defaultValue": { "value": "5" },    "description": "Rule score at or above which a message is a scam" },
+    "suspicious_score": { "defaultValue": { "value": "2" },    "description": "Rule score at or above which a message is suspicious" },
+    "local_confidence": { "defaultValue": { "value": "0.75" }, "description": "Gemini Nano confidence needed to settle on-device" },
+    "cloud_model":      { "defaultValue": { "value": "gemini-3.5-flash-lite" }, "description": "Cloud model for escalations" }
+  }
+}
