@@ -2,6 +2,8 @@
 
 **Catches scam messages on your own device. Only redacted text ever reaches the cloud.**
 
+▶ **Demo video (3 min):** https://www.youtube.com/watch?v=6ADIEzE3W6M
+
 Online fraud in India keeps finding new shapes: "digital arrest" calls, fake KYC alerts,
 task-based job scams. The victims are often the least technical person in the family.
 Scam Shield checks a message and says *scam / suspicious / safe* in plain language, on two platforms:
